@@ -20,12 +20,7 @@
       }
     ]
   },
-  "emulators": {
-    "hosting": {
-      "port": 5000,
-      "host": "0.0.0.0"
-    }
-  },
+  "emulators": {},
   "remoteconfig": {
     "template": "remoteconfig.template.json"
   }
