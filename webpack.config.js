@@ -99,6 +99,7 @@ module.exports = {
         },
         vendors: {
           test: /[\\/]node_modules[\\/]/,
+          minChunks: Infinity,
           chunks: 'all',
           filename: isProduction ? 'vendor.[contenthash].js' : 'vendor.[hash].js',
           priority: -10
@@ -148,7 +149,7 @@ module.exports = {
     clientLogLevel: 'warning'
   },
   // https://webpack.js.org/configuration/devtool/
-  devtool: isProduction ? 'hidden-source-map' : 'cheap-module-eval-source-map',
+  devtool: isProduction ? 'hidden-source-map' : 'inline-source-map',
   node: {
     // workaround for webpack-dev-server issue
     // https://github.com/webpack/webpack-dev-server/issues/60#issuecomment-103411179
