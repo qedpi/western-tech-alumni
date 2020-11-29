@@ -1,11 +1,18 @@
-import React from 'react';
-import style from './style.css';
-import { RouteComponentProps } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTodoActions } from 'app/actions';
-import { RootState } from 'app/reducers';
-import { TodoModel } from 'app/models';
-import { Header, TodoList, Footer } from 'app/components';
+import React, { useEffect, useState } from 'react'
+import style from './style.css'
+import { RouteComponentProps } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTodoActions } from 'app/actions'
+import { RootState } from 'app/reducers'
+import { TodoModel } from 'app/models'
+import firebase from 'firebase/app'
+import { Footer, Header, TodoList } from 'app/components'
+
+declare global {
+  interface Window {
+    firebase: any
+  }
+}
 
 const FILTER_VALUES = (Object.keys(TodoModel.Filter) as (keyof typeof TodoModel.Filter)[]).map(
   (key) => TodoModel.Filter[key]
@@ -22,8 +29,24 @@ export namespace App {
 }
 
 export const App = ({ history, location }: App.Props) => {
-  const dispatch = useDispatch();
-  const todoActions = useTodoActions(dispatch);
+  const [firebase, setFirebase] = useState(null)
+  useEffect(() => {
+    document.addEventListener('DOMContentLoaded', function () {
+      setFirebase(window.firebase)
+    })
+  }, [])
+
+  if (firebase) {
+    const db : firebase.firestore.Firestore = window.firebase.firestore();
+    db.collection("users").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            console.log(doc.id, ' => ', doc.data());
+        });
+      });
+  }
+
+  const dispatch = useDispatch()
+  const todoActions = useTodoActions(dispatch)
   const { todos, filter } = useSelector((state: RootState) => {
     const hash = location?.hash?.replace('#', '');
     return {
