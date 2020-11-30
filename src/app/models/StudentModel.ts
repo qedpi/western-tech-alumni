@@ -3,11 +3,12 @@
 export interface Student {
   firstName: string,
   lastName: string,
-  email: string,
-  major?: string,
-  graduationYear?: number,
+  schoolEmail?: string,
+  preferredEmail?: string,
+  expectedGraduationYear?: number,
+  isGraduated?: boolean,
   latestWorkshopCompletion?: WorkshopCompletion,
-  alumniInfo?: AlumniInfo,
+  alumniEmploymentInfo?: AlumniEmploymentInfo,
 }
 
 export interface WorkshopCompletion {
@@ -15,7 +16,7 @@ export interface WorkshopCompletion {
   recommendedForReferral: boolean,
 }
 
-export interface AlumniInfo {
+export interface AlumniEmploymentInfo {
   currentCompany: string,
   willingToRefer: boolean,
   willingToChat: boolean,
