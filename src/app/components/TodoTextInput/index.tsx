@@ -57,7 +57,7 @@ export const TodoTextInput = ({ placeholder, newTodo, onSave }: TodoTextInput.Pr
     <input
       className={classes}
       type="text"
-      autoFocus
+      // autoFocus
       placeholder={placeholder}
       value={inputText}
       onChange={handleChange}
