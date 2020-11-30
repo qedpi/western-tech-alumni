@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 // import { TodoTextInput } from '../TodoTextInput';
 // import { TodoActions } from 'app/actions/todos';
+import { FormControlLabel } from '@material-ui/core'
+import ToggleButton from '@material-ui/lab/ToggleButton';
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormGroup from '@material-ui/core/FormGroup'
-import { FormControlLabel } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import CheckIcon from '@material-ui/icons/Check';
 // import { AlumniEmploymentInfo, WorkshopCompletion } from 'app/models/StudentModel'
 
 const useStyles = makeStyles((theme) => ({
@@ -37,9 +39,17 @@ export const StudentList = (): JSX.Element => {
     expectedGradYear: new Date().getFullYear() + 1,
     isGraduated: false,
     isEmployed: false,
+    currentCompany: '',
     willRefer: false,
     willChat: false,
+    debugIsAdmin: false,
   })
+
+  const addStudentHandler = () => {
+    // todo: add to firebase: https://firebase.google.com/docs/database/admin/save-data#node.js_1
+    const Student = {...state}
+    console.log(Student)
+  }
 
   const fullName = (
     <div>
@@ -48,13 +58,13 @@ export const StudentList = (): JSX.Element => {
         id="first-name"
         className={classes.textField}
         required
-      />
+        onChange={event => setState({ ...state, firstName: event.target.value })}/>
       <TextField
         label="Last Name"
         id="last-name"
         className={classes.textField}
         required
-      />
+        onChange={event => setState({ ...state, lastName: event.target.value })}/>
     </div>
   )
 
@@ -68,7 +78,8 @@ export const StudentList = (): JSX.Element => {
         fullWidth
         margin="normal"
         required
-      />
+        onChange={event => setState({ ...state, universityEmail: event.target.value })}/>
+
       <TextField
         id="preferred-email"
         label="Preferred Email"
@@ -76,7 +87,8 @@ export const StudentList = (): JSX.Element => {
         helperText="for following up"
         fullWidth
         margin="normal"
-      />
+        onChange={event => setState({ ...state, preferredEmail: event.target.value })}/>
+
       <TextField
         id="standard-number"
         label="Expected Grad Year"
@@ -86,7 +98,7 @@ export const StudentList = (): JSX.Element => {
         InputLabelProps={{
           shrink: true
         }}
-      />
+        onChange={event => setState({ ...state, expectedGradYear: parseInt(event.target.value) })}/>
     </FormGroup>
   )
 
@@ -112,7 +124,8 @@ export const StudentList = (): JSX.Element => {
         id="current-company"
         className={classes.textField}
         required
-      />
+        onChange={event => setState({ ...state, currentCompany: event.target.value })}/>
+
       <FormControlLabel
         control={<Checkbox name="checkedRefer" checked={state.willRefer}
                            onChange={() => setState({ ...state, willRefer: !state.willRefer })}/>}
@@ -125,21 +138,28 @@ export const StudentList = (): JSX.Element => {
       />
     </FormGroup>
   )
-  // export interface AlumniEmploymentInfo {
-  //   currentCompany: string,
-  //   willingToRefer: boolean,
-  //   willingToChat: boolean,
 
   return (
     <div className={classes.root}>
       <div className="form">
+        <ToggleButton
+          value="check"
+          selected={state.debugIsAdmin}
+          onChange={() => {
+            setState({...state, debugIsAdmin: !state.debugIsAdmin})
+          }}
+        >
+          {state.debugIsAdmin ? 'Admin Mode' : 'Student Mode'}
+          <CheckIcon/>
+        </ToggleButton>
         {fullName}
         {universityInfo}
         {gradInfo}
         {alumniInfo}
-        <Button variant="contained" color="primary">
-          Add Student to DB
-        </Button>
+        {/* todo: better validate https://redux-form.com/6.5.0/examples/material-ui/*/}
+        <Button onClick={addStudentHandler} disabled={!(state.firstName && state.lastName && state.universityEmail)}
+                variant="contained" color="primary">
+          Add Student to DB</Button>
       </div>
     </div>
   )
