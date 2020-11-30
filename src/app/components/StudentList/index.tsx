@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react'
 // import { TodoTextInput } from '../TodoTextInput';
 // import { TodoActions } from 'app/actions/todos';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormGroup from '@material-ui/core/FormGroup'
+import { FormControlLabel } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 // import { AlumniEmploymentInfo, WorkshopCompletion } from 'app/models/StudentModel'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: '25ch',
-  },
-}));
+    width: '25ch'
+  }
+}))
 
 export namespace StudentList {
   export interface Props {
@@ -24,7 +28,18 @@ export namespace StudentList {
 }
 
 export const StudentList = (): JSX.Element => {
-  const classes = useStyles();
+  const classes = useStyles()
+  const [state, setState] = useState({
+    firstName: '',
+    lastName: '',
+    universityEmail: '',
+    preferredEmail: '',
+    expectedGradYear: new Date().getFullYear() + 1,
+    isGraduated: false,
+    isEmployed: false,
+    willRefer: false,
+    willChat: false,
+  })
 
   const fullName = (
     <div>
@@ -44,7 +59,7 @@ export const StudentList = (): JSX.Element => {
   )
 
   const universityInfo = (
-    <div>
+    <FormGroup>
       <TextField
         id="university-email"
         label="University Email"
@@ -64,19 +79,52 @@ export const StudentList = (): JSX.Element => {
       />
       <TextField
         id="standard-number"
-        label="Number"
+        label="Expected Grad Year"
         type="number"
-        // placeholder={new Date().getFullYear()}
+        defaultValue={new Date().getFullYear() + 1}
         style={{ margin: 8 }}
         InputLabelProps={{
-          shrink: true,
+          shrink: true
         }}
+      />
+    </FormGroup>
+  )
+
+  const gradInfo = (
+    <div>
+      <FormControlLabel
+        control={<Checkbox name="checkedGraduated" checked={state.isGraduated}
+                           onChange={() => setState({ ...state, isGraduated: !state.isGraduated })}/>}
+        label="Has Graduated"
+      />
+      <FormControlLabel
+        control={<Checkbox name="checkedEmployed" checked={state.isEmployed}
+                           onChange={() => setState({ ...state, isEmployed: !state.isEmployed })}/>}
+        label="Is Employed"
       />
     </div>
   )
-  //   expectedGraduationYear?: number,
-  // isGraduated?: boolean,
-  //
+
+  const alumniInfo = state.isEmployed && (
+    <FormGroup>
+      <TextField
+        label="Current Company"
+        id="current-company"
+        className={classes.textField}
+        required
+      />
+      <FormControlLabel
+        control={<Checkbox name="checkedRefer" checked={state.willRefer}
+                           onChange={() => setState({ ...state, willRefer: !state.willRefer })}/>}
+        label="Willing to Refer"
+      />
+      <FormControlLabel
+        control={<Checkbox name="checkedChat" checked={state.willChat}
+                           onChange={() => setState({ ...state, willChat: !state.willChat })}/>}
+        label="Willing to Chat"
+      />
+    </FormGroup>
+  )
   // export interface AlumniEmploymentInfo {
   //   currentCompany: string,
   //   willingToRefer: boolean,
@@ -84,59 +132,15 @@ export const StudentList = (): JSX.Element => {
 
   return (
     <div className={classes.root}>
-      <div>
+      <div className="form">
         {fullName}
         {universityInfo}
-        <TextField
-          label="Normal"
-          id="margin-normal"
-          defaultValue="Default Value"
-          className={classes.textField}
-          helperText="Some important text"
-          margin="normal"
-        />
-      </div>
-      <div>
-        <TextField
-          id="filled-full-width"
-          label="Label"
-          style={{ margin: 8 }}
-          placeholder="Placeholder"
-          helperText="Full width!"
-          fullWidth
-          margin="normal"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="filled"
-        />
-        <TextField
-          label="None"
-          id="filled-margin-none"
-          defaultValue="Default Value"
-          className={classes.textField}
-          helperText="Some important text"
-          variant="filled"
-        />
-        <TextField
-          label="Dense"
-          id="filled-margin-dense"
-          defaultValue="Default Value"
-          className={classes.textField}
-          helperText="Some important text"
-          margin="dense"
-          variant="filled"
-        />
-        <TextField
-          label="Normal"
-          id="filled-margin-normal"
-          defaultValue="Default Value"
-          className={classes.textField}
-          helperText="Some important text"
-          margin="normal"
-          variant="filled"
-        />
+        {gradInfo}
+        {alumniInfo}
+        <Button variant="contained" color="primary">
+          Add Student to DB
+        </Button>
       </div>
     </div>
-  );
-};
+  )
+}
