@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  appBar: {
+    background: '#4502b1',
+  }
 }));
 
 export namespace MyAppBar {
@@ -32,7 +35,7 @@ export const MyAppBar = (): JSX.Element => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           {/*<IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">*/}
           {/*  <MenuIcon />*/}
