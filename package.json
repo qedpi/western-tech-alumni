@@ -20,8 +20,9 @@
     "start": "webpack-dev-server --mode development --hot --progress --color --port 3000 --open",
     "build": "webpack -p --progress --colors",
     "build-dev": "webpack --mode=development --progress --colors",
-    "b": "webpack --mode=development --progress --colors",
-    "e": "firebase emulators:start"
+    "b": "npm run build-dev",
+    "e": "firebase emulators:start --import=./dummy_data ",
+    "s": "npm run start"
   },
   "license": "MIT",
   "devDependencies": {

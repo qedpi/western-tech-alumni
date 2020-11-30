@@ -1,14 +1,10 @@
 import React, { useState } from 'react'
 // import { TodoTextInput } from '../TodoTextInput';
 // import { TodoActions } from 'app/actions/todos';
-import { FormControlLabel } from '@material-ui/core'
+import { Button, TextField, Checkbox, FormControlLabel, FormGroup } from '@material-ui/core'
 import ToggleButton from '@material-ui/lab/ToggleButton';
-import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormGroup from '@material-ui/core/FormGroup'
-import Button from '@material-ui/core/Button'
 import CheckIcon from '@material-ui/icons/Check';
+import { makeStyles } from '@material-ui/core/styles'
 // import { AlumniEmploymentInfo, WorkshopCompletion } from 'app/models/StudentModel'
 
 const useStyles = makeStyles((theme) => ({
