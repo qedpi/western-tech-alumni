@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from 'react'
 import style from './style.css'
-import { RouteComponentProps } from 'react-router'
+import { Route, RouteComponentProps, Switch } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTodoActions } from 'app/actions'
 import { RootState } from 'app/reducers'
 import { TodoModel } from 'app/models'
 import {FirebaseContext} from 'app/FirebaseContext';
-import { Footer, Header, TodoList, StudentList } from 'app/components'
+import { Footer, Header, TodoList, StudentList, MyAppBar } from 'app/components'
 
 const FILTER_VALUES = (Object.keys(TodoModel.Filter) as (keyof typeof TodoModel.Filter)[]).map(
   (key) => TodoModel.Filter[key]
@@ -63,16 +63,25 @@ export const App = ({ history, location }: App.Props) => {
 
   return (
     <div className={style.normal}>
-      <StudentList/>
-      <Header addTodo={todoActions.addTodo} />
-      <TodoList todos={filteredTodos} actions={todoActions} />
-      <Footer
-        filter={filter}
-        activeCount={activeCount}
-        completedCount={completedCount}
-        onClickClearCompleted={handleClearCompleted}
-        onClickFilter={handleFilterChange}
-      />
+      <MyAppBar/>
+      <Switch>
+        <Route path="/admin">
+          <StudentList/>
+        </Route>
+        <Route path="/search">
+          <Header addTodo={todoActions.addTodo} />
+          <TodoList todos={filteredTodos} actions={todoActions} />
+          <Footer
+            filter={filter}
+            activeCount={activeCount}
+            completedCount={completedCount}
+            onClickClearCompleted={handleClearCompleted}
+            onClickFilter={handleFilterChange}
+          />
+        </Route>
+        <Route path="/">
+        </Route>
+      </Switch>
     </div>
   );
 };
